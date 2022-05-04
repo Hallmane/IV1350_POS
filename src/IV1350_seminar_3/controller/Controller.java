@@ -22,12 +22,32 @@ public class Controller {
      * @param quantity how many of the items, of type int
      * @return the itemDTO
      */
-    public ItemDTO itemScan(int itemID, int quantity) {
+    public ItemDTO ite(int itemID, int quantity) {
         Item scannedItem = itemDatabase.getItemByID(itemID, quantity);
         sale.addItemToSale(scannedItem);
 
         ItemDTO newItemDTO = new ItemDTO(scannedItem);
         return newItemDTO;
+    }
+    public ItemDTO itemScan(int itemID, int quantity){ //find item in itemdatabase
+        Item scannedItem = itemDatabase.getItemByID(itemID, quantity);
+        ItemDTO[] dtos = sale.returnItemsDTO();
+
+        boolean alreadyExists = false;
+
+        for (int i = 0; i < dtos.length; i++){
+            if(dtos[i].getName().equals(scannedItem.getName()))
+            {
+                alreadyExists = true;
+                sale.increaseItemQuantity(dtos[i].getName(), quantity);
+            }
+        }
+        if(!alreadyExists) {
+            sale.addItemToSale(scannedItem);
+        }
+
+        ItemDTO scannedItemDTO = new ItemDTO(scannedItem);
+        return scannedItemDTO;
     }
 
     /**

@@ -50,6 +50,16 @@ public class Sale {
         }
         return itemDTOCopy;
     }
+    public void increaseItemQuantity(String name, int addedQuantity){
+        for(int i = 0; i < itemsInSale.size(); i++)
+        {
+            if(itemsInSale.get(i).getName().equals(name))
+            {
+                itemsInSale.get(i).setQuantity(itemsInSale.get(i).getQuantity() + addedQuantity);
+                break;
+            }
+        }
+    }
 
     /**
      * calls upon the setSaleTime method to create a timestamp
