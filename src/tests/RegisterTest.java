@@ -27,6 +27,6 @@ class RegisterTest {
         float expectedAmount = amountBefore + amountToAdd;
 
         register.depositPayment(amountToAdd);
-        assertEquals(expectedAmount,register.getBalance());
+        assertEquals(expectedAmount,register.getBalance(), "Amount not the same");
     }
 }

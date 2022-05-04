@@ -19,7 +19,7 @@ class ItemTest {
 
     @Test
     void testEquals() {
-        assertEquals(itemToTest1.toString(), itemToTest2.toString());
+        assertEquals(itemToTest1.toString(), itemToTest2.toString(), "Items not the same");
     }
 
     @AfterEach
