@@ -1,6 +1,9 @@
 package IV1350_seminar_3.integration;
 
+import IV1350_seminar_3.model.InvalidQuantityException;
 import IV1350_seminar_3.model.Item;
+import IV1350_seminar_3.model.NoItemIDException;
+
 import java.util.HashMap;
 
 /**
@@ -40,8 +43,22 @@ public class ItemDatabase {
      * @param id is the specified ID of the item
      * @param quantity is the number of items
      * @return Item itemCopy
+     * @throws NoItemIDException when item identifier is invalid
+     * @throws InvalidQuantityException when item quantity is invalid
+     * @throws ServerErrorException when the server cannot be reached
      */
-    public Item getItemByID(int id, int quantity){
+    public Item getItemByID(int id, int quantity) throws NoItemIDException, InvalidQuantityException, ServerErrorException {
+
+        if(id == 404) {
+            throw new ServerErrorException();
+        }
+        if (!itemHashMap.containsKey(id)) {
+            throw new NoItemIDException(id);
+
+        } else if(quantity<1) {
+            throw new InvalidQuantityException(quantity);
+        }
+
         Item itemCopy = new Item(itemHashMap.get(id), quantity);
         return itemCopy;
     }

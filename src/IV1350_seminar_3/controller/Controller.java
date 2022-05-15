@@ -3,18 +3,27 @@ package IV1350_seminar_3.controller;
 import IV1350_seminar_3.DTOs.ItemDTO;
 import IV1350_seminar_3.integration.ItemDatabase;
 import IV1350_seminar_3.integration.Printer;
+import IV1350_seminar_3.integration.ServerErrorException;
 import IV1350_seminar_3.model.*;
+import IV1350_seminar_3.util.ErrorMessageHandler;
+import IV1350_seminar_3.util.LogHandler;
+
+import java.util.ArrayList;
 
 /**
  * the Controller class which is responsible for calling the methods needed
  */
 public class Controller {
     private Sale sale;
-    private Item item;
+    private Item item; //Remove?
     private SaleLog saleLog = new SaleLog();
     private ItemDatabase itemDatabase  = new ItemDatabase();
     private Printer printer = new Printer();
     private Register register = new Register();
+
+    private ErrorMessageHandler errorMessageHandler = new ErrorMessageHandler();
+    private LogHandler logHandler = new LogHandler();
+    private ArrayList<TotalRevenueObserver> totalRevenueObservers = new ArrayList<>();
 
     /**
      * creates the DTO for the type Item
@@ -22,30 +31,31 @@ public class Controller {
      * @param quantity how many of the items, of type int
      * @return the itemDTO
      */
-    public ItemDTO ite(int itemID, int quantity) {
-        Item scannedItem = itemDatabase.getItemByID(itemID, quantity);
+
+    public ItemDTO itemScan(int itemID, int quantity) { //find item in item database
+        Item scannedItem = null;
+        try {
+            scannedItem = itemDatabase.getItemByID(itemID, quantity);
+        }
+        catch(NoItemIDException e) {
+            logHandler.logErrorMessage(e);
+            errorMessageHandler.showErrorMessage(e.getMessage());
+            return null;
+        }
+        catch(InvalidQuantityException e) {
+            logHandler.logErrorMessage(e);
+            errorMessageHandler.showErrorMessage(e.getMessage());
+            return null;
+        }
+        catch(ServerErrorException e) {
+            logHandler.logErrorMessage(e);
+            errorMessageHandler.showErrorMessage(e.getMessage());
+            return null;
+        }
+
+        //ItemDTO[] dtos = sale.returnItemsDTO();
+
         sale.addItemToSale(scannedItem);
-
-        ItemDTO newItemDTO = new ItemDTO(scannedItem);
-        return newItemDTO;
-    }
-    public ItemDTO itemScan(int itemID, int quantity){ //find item in itemdatabase
-        Item scannedItem = itemDatabase.getItemByID(itemID, quantity);
-        ItemDTO[] dtos = sale.returnItemsDTO();
-
-        boolean alreadyExists = false;
-
-        for (int i = 0; i < dtos.length; i++){
-            if(dtos[i].getName().equals(scannedItem.getName()))
-            {
-                alreadyExists = true;
-                sale.increaseItemQuantity(dtos[i].getName(), quantity);
-            }
-        }
-        if(!alreadyExists) {
-            sale.addItemToSale(scannedItem);
-        }
-
         ItemDTO scannedItemDTO = new ItemDTO(scannedItem);
         return scannedItemDTO;
     }
@@ -63,6 +73,7 @@ public class Controller {
      * @return a float of the final price, finalPrice
      */
     public float endSale() {
+        sale.endSale();
         float finalPrice = sale.endSale();
         return finalPrice;
     }
@@ -75,6 +86,7 @@ public class Controller {
     public void finish(){
         Receipt receipt = new Receipt(sale);
         saleLog.addToSaleLog(sale);
+        sale.addTotalPaymentObservers(totalRevenueObservers);
         itemDatabase.updateItemDatabase();
         printer.printReceipt(receipt);
     }
@@ -82,8 +94,11 @@ public class Controller {
     public float getRunningTotal() {
         return sale.getRunningTotal(); 
     }
-    public void depositAmountPayed(float payment) {
+    public void depositAmountPaid(float payment) {
         register.depositPayment(payment);
     }
 
+    public void addTotalPaymentObserver(TotalRevenueObserver totalRevenueObserver) {
+        totalRevenueObservers.add(totalRevenueObserver);
+    }
 }

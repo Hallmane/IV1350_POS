@@ -1,21 +1,33 @@
 package IV1350_seminar_3.model;
 
 import IV1350_seminar_3.DTOs.ItemDTO;
+
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * An object of type Sale
  */
 public class Sale {
-    private LocalTime timeOfSale;
-    private ArrayList<Item> itemsInSale = new  ArrayList<Item>();
+    private ArrayList<Item> itemsInSale = new  ArrayList<>();
+    private List<TotalRevenueObserver> totalRevenueObservers = new ArrayList<>();
 
     /**
      * Adds objects of type Item to the ArrayList created
-     * @param item is the item
+     *  If the name of the scanned item matches another item already in the sale, it will
+     *      call upon the increaseItemQuantity to update the amount of that item in the sale.
+     * @param item is the item scanned
      */
     public void addItemToSale(Item item) {
+
+        for (int i=0; i< itemsInSale.size(); i++) {
+            if(itemsInSale.get(i).getName().equals(item.getName())){
+                increaseItemQuantity(item.getName(), item.getQuantity());
+                return;
+            }
+        }
+
         itemsInSale.add(item);
     }
 
@@ -23,7 +35,7 @@ public class Sale {
      * Calls upon the LocalTime object's method to find the current time
      */
     public void setSaleTime() {
-         timeOfSale = LocalTime.now();
+         LocalTime.now();
     }
 
     /**
@@ -40,6 +52,19 @@ public class Sale {
     }
 
     /**
+     * Notifies observers
+     * @param finalTotal cool:-)
+     */
+    private void notifyObservers(float finalTotal) {
+        for (TotalRevenueObserver totalRevenueObserver : totalRevenueObservers) {
+            totalRevenueObserver.newPayment(finalTotal);
+        }
+    }
+    public void addTotalPaymentObservers(List<TotalRevenueObserver> totalRevenueObservers) {
+        totalRevenueObservers.addAll(totalRevenueObservers);
+    }
+
+    /**
      * copies the itemsInSale into a new array
      * @return an array of ItemDTO
      */
@@ -50,6 +75,12 @@ public class Sale {
         }
         return itemDTOCopy;
     }
+
+    /**
+     *  Logic for increasing item quantity if same item type already exists in the current sale
+     * @param name is the name of the item that is getting added
+     * @param addedQuantity is the amount of the item type
+     */
     public void increaseItemQuantity(String name, int addedQuantity){
         for(int i = 0; i < itemsInSale.size(); i++)
         {
@@ -62,14 +93,17 @@ public class Sale {
     }
 
     /**
-     * calls upon the setSaleTime method to create a timestamp
-     * @return getRunningTotal, which then becomes the final price
+     * Calls upon the setSaleTime method to create a timestamp.
+     * Sets the variable finalTotal to the getRunningTotal method, which sums the prices of items in basket.
+     * Broadcasts finalTotal to all subscribers.
+     * @return finalTotal.
      */
     public float endSale() {
         setSaleTime();
-        return getRunningTotal();
+        float finalTotal = getRunningTotal();
+        notifyObservers(finalTotal);
+        return finalTotal;
     }
-
 }
 
 

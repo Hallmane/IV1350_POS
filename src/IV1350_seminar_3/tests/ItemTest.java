@@ -1,4 +1,4 @@
-package tests;
+package IV1350_seminar_3.tests;
 
 import IV1350_seminar_3.model.Item;
 import org.junit.jupiter.api.AfterEach;

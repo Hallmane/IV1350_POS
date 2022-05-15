@@ -7,6 +7,7 @@ import java.util.ArrayList;
  */
 public class SaleLog {
     private ArrayList<Sale> loggedSales = new ArrayList<Sale>();
+    //private ArrayList<RentalObserver> rentalObservers = new ArrayList<RentalObserver>();
 
     /**
      * appends a sale to the loggedSales variable

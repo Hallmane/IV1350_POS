@@ -37,8 +37,6 @@ public class Item {
         return name + price + quantity + VAT;
     }
 
-
-
     public String getName() {
         return name;
     }
@@ -59,4 +57,3 @@ public class Item {
             this.quantity = quantity;
     }
 }
-

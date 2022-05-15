@@ -1,9 +1,7 @@
-package tests;
+package IV1350_seminar_3.tests;
 
 import IV1350_seminar_3.model.Item;
 import IV1350_seminar_3.model.Sale;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class PrinterTest {
     private String printerTestObject;
