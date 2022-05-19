@@ -10,10 +10,11 @@ import java.time.format.FormatStyle;
 public class ErrorMessageHandler {
     public void showErrorMessage(String errorMessage) {
         StringBuilder message = new StringBuilder();
+        message.append("[USER_LOG] ");
         message.append(createTime());
-        message.append(": [ERROR]");
+        message.append(": [ERROR] ");
         message.append(errorMessage);
-        System.out.println(errorMessage);
+        System.out.println(message);
     }
     private String createTime() {
         LocalDateTime now = LocalDateTime.now();

@@ -10,7 +10,7 @@ import java.time.LocalTime;
  */
 public class Receipt {
 
-    private String finalSale = "\nReceipt\n";
+    private String finalSale = "";
 
     /**
      * the constructor for the Receipt object.
@@ -20,10 +20,11 @@ public class Receipt {
      */
     public Receipt(Sale sale){
         ItemDTO[] itemDTOs = sale.returnItemsDTO();
+        finalSale += "\n[RECEIPT]\n";
         finalSale += "_________________________________\n";
         for(int i=0; i < itemDTOs.length; i++) {
             finalSale += itemDTOs[i].getName() + " "
-             + itemDTOs[i].getPrice() + " x " +
+             + (itemDTOs[i].getPrice() + itemDTOs[i].getPrice()*itemDTOs[i].getVAT()) + " x " +
              itemDTOs[i].getQuantity() + " \n";
         }
         finalSale += " Total: ";

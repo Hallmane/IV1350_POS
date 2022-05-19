@@ -16,6 +16,6 @@ public class TotalRevenueView implements TotalRevenueObserver {
     }
 
     private void toDisplay(float total) {
-        System.out.println("\nTotal revenue: " + total + ".\n_________________________\n");
+        System.out.println("\n[TOTAL REVENUE] \nTotal revenue: " + total + ".\n_________________________\n");
     }
 }

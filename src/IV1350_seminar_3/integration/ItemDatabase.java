@@ -13,15 +13,19 @@ public class ItemDatabase {
     private HashMap<Integer, Item> itemHashMap = new HashMap<Integer, Item>();
     private final int appleID = 1;
     private final int magazineID = 2;
+    private final int koolaidID = 3;
 
     private final String appleName = "Apple";
     private final String magazineName = "Hustler";
+    private final String koolaidName = "KoolAid";
 
     private final float appleVATRate = 0.1f;
     private final float magazineVATRate = 0.25f;
+    private final float koolaidVATRate = 0.30f;
 
     private final float applePrice = 10f;
     private final float magazinePrice = 39.90f;
+    private final float koolaidPrice = 9.95f;
 
     /**
      * Constructor for the object
@@ -36,6 +40,7 @@ public class ItemDatabase {
     private void fillInventorySystem(){
         itemHashMap.put(appleID, new Item(appleName, applePrice, appleVATRate));
         itemHashMap.put(magazineID, new Item(magazineName, magazinePrice, magazineVATRate));
+        itemHashMap.put(koolaidID, new Item(koolaidName, koolaidPrice, koolaidVATRate));
     }
 
     /**
@@ -67,7 +72,7 @@ public class ItemDatabase {
      * Placeholder method for updating the inventory after the sale has ended.
      */
     public void updateItemDatabase() {
-        System.out.println("Inventory updated.");
+        System.out.println("[ITEM_DATABASE]\nInventory updated.");
     }
 }
 

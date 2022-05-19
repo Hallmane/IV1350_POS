@@ -20,7 +20,7 @@ class NoItemIDExceptionTest {
         itemDatabase = new ItemDatabase();
     }
     @Test
-    void testInvalidQuantityException() {
+    void testNoItemIDException() {
         try {
             invalidItem = itemDatabase.getItemByID(invalidItemID, quantity);
             fail("Could get item not found in database.");

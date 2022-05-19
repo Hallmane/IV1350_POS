@@ -4,14 +4,13 @@ import IV1350_seminar_3.DTOs.ItemDTO;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * An object of type Sale
  */
 public class Sale {
     private ArrayList<Item> itemsInSale = new  ArrayList<>();
-    private List<TotalRevenueObserver> totalRevenueObservers = new ArrayList<>();
+    private float finalTotal = 0;
 
     /**
      * Adds objects of type Item to the ArrayList created
@@ -51,18 +50,6 @@ public class Sale {
         return total;
     }
 
-    /**
-     * Notifies observers
-     * @param finalTotal cool:-)
-     */
-    private void notifyObservers(float finalTotal) {
-        for (TotalRevenueObserver totalRevenueObserver : totalRevenueObservers) {
-            totalRevenueObserver.newPayment(finalTotal);
-        }
-    }
-    public void addTotalPaymentObservers(List<TotalRevenueObserver> totalRevenueObservers) {
-        totalRevenueObservers.addAll(totalRevenueObservers);
-    }
 
     /**
      * copies the itemsInSale into a new array
@@ -100,16 +87,10 @@ public class Sale {
      */
     public float endSale() {
         setSaleTime();
-        float finalTotal = getRunningTotal();
-        notifyObservers(finalTotal);
+        finalTotal = getRunningTotal();
         return finalTotal;
     }
 }
-
-
-
-
-
 
 
 

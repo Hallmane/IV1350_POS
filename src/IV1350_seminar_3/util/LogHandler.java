@@ -12,10 +12,10 @@ public class LogHandler {
      */
     public void logErrorMessage(Exception exception) {
         StringBuilder message = new StringBuilder();
-        message.append(createTime());
-        message.append(", [[DEVELOPER_LOG] Exception was thrown]: \t");
+        message.append("\n[[DEVELOPER_LOG] Exception was thrown]: \t");
+        message.append("\n" + createTime());
         message.append(exception.getMessage());
-        message.append(exception.getStackTrace().toString());
+        message.append("\n" + exception.getStackTrace().toString());
         System.out.println(message);
     }
     private String createTime() {

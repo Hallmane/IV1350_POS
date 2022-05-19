@@ -4,18 +4,16 @@ import IV1350_seminar_3.DTOs.ItemDTO;
 import IV1350_seminar_3.integration.ItemDatabase;
 import IV1350_seminar_3.integration.Printer;
 import IV1350_seminar_3.integration.ServerErrorException;
+import IV1350_seminar_3.view.TotalRevenueFileOutput;
 import IV1350_seminar_3.model.*;
 import IV1350_seminar_3.util.ErrorMessageHandler;
 import IV1350_seminar_3.util.LogHandler;
-
-import java.util.ArrayList;
 
 /**
  * the Controller class which is responsible for calling the methods needed
  */
 public class Controller {
     private Sale sale;
-    private Item item; //Remove?
     private SaleLog saleLog = new SaleLog();
     private ItemDatabase itemDatabase  = new ItemDatabase();
     private Printer printer = new Printer();
@@ -23,7 +21,7 @@ public class Controller {
 
     private ErrorMessageHandler errorMessageHandler = new ErrorMessageHandler();
     private LogHandler logHandler = new LogHandler();
-    private ArrayList<TotalRevenueObserver> totalRevenueObservers = new ArrayList<>();
+    private TotalRevenueFileOutput totalRevenueFileOutput = new TotalRevenueFileOutput();
 
     /**
      * creates the DTO for the type Item
@@ -31,7 +29,7 @@ public class Controller {
      * @param quantity how many of the items, of type int
      * @return the itemDTO
      */
-
+// Relocate this to Sale instead.
     public ItemDTO itemScan(int itemID, int quantity) { //find item in item database
         Item scannedItem = null;
         try {
@@ -56,8 +54,7 @@ public class Controller {
         //ItemDTO[] dtos = sale.returnItemsDTO();
 
         sale.addItemToSale(scannedItem);
-        ItemDTO scannedItemDTO = new ItemDTO(scannedItem);
-        return scannedItemDTO;
+        return new ItemDTO(scannedItem);
     }
 
     /**
@@ -86,7 +83,6 @@ public class Controller {
     public void finish(){
         Receipt receipt = new Receipt(sale);
         saleLog.addToSaleLog(sale);
-        sale.addTotalPaymentObservers(totalRevenueObservers);
         itemDatabase.updateItemDatabase();
         printer.printReceipt(receipt);
     }
@@ -99,6 +95,6 @@ public class Controller {
     }
 
     public void addTotalPaymentObserver(TotalRevenueObserver totalRevenueObserver) {
-        totalRevenueObservers.add(totalRevenueObserver);
+        register.addTotalPaymentObservers(totalRevenueObserver);
     }
 }

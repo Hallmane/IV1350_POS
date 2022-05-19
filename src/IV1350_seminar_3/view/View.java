@@ -20,8 +20,8 @@ public class View {
     private int thirdItemID = 404;
     private int thirdItemQuantity = 3;
 
-    private int fourthItemID = 404;
-    private int fourthItemQuantity = 3;
+    private int fourthItemID = 3;
+    private int fourthItemQuantity = -4;
 
 
     /**
@@ -34,7 +34,7 @@ public class View {
     public View(Controller controller) {
         this.controller = controller;
         controller.addTotalPaymentObserver(new TotalRevenueView());
-        //predeterminedView();
+        controller.addTotalPaymentObserver(new TotalRevenueFileOutput());
     }
     /**
      * prints some text to the "display"
@@ -59,13 +59,12 @@ public class View {
         ItemDTO thirdItemDTO = controller.itemScan(thirdItemID, thirdItemQuantity);
         itemToPrint(thirdItemDTO);
 
-        ItemDTO fourthItemDTO = controller.itemScan(firstItemID, thirdItemQuantity);
+        ItemDTO fourthItemDTO = controller.itemScan(fourthItemID, fourthItemQuantity);
         itemToPrint(fourthItemDTO);
 
 
         float totalPrice = controller.endSale();
         controller.depositAmountPaid(totalPrice);
-
         controller.finish();
     }
 
@@ -75,7 +74,7 @@ public class View {
      */
     private void itemToPrint(ItemDTO itemDTO) {
         if(!(itemDTO==null)) {
-            printToDisplay(itemDTO.getName() + " | " +
+            printToDisplay("[VIEW]\n" + itemDTO.getName() + " | " +
                     itemDTO.getQuantity() + " x " + (itemDTO.getPrice()
                     + itemDTO.getPrice() * itemDTO.getVAT()) + "\nRunning Total: "
                     + controller.getRunningTotal());
