@@ -5,6 +5,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ * Creates a new file as well as overwriting the old one(if it exists). It also
+ * creates a new instance.
+ */
 public class TotalRevenueFileOutput implements TotalRevenueObserver {
     float totalRevenue;
     private PrintWriter logStream;
