@@ -29,7 +29,6 @@ public class Controller {
      * @param quantity how many of the items, of type int
      * @return the itemDTO
      */
-// Relocate this to Sale instead.
     public ItemDTO itemScan(int itemID, int quantity) { //find item in item database
         Item scannedItem = null;
         try {
@@ -50,8 +49,6 @@ public class Controller {
             errorMessageHandler.showErrorMessage(e.getMessage());
             return null;
         }
-
-        //ItemDTO[] dtos = sale.returnItemsDTO();
 
         sale.addItemToSale(scannedItem);
         return new ItemDTO(scannedItem);
@@ -90,10 +87,19 @@ public class Controller {
     public float getRunningTotal() {
         return sale.getRunningTotal(); 
     }
+
+    /**
+     * calls upon the register to deposit payment.
+     * @param payment is the amount to be deposited.
+     */
     public void depositAmountPaid(float payment) {
         register.depositPayment(payment);
     }
 
+    /**
+     * Registers a new TotalRevenueObserver to receive notice about changes in total revenue
+     * @param totalRevenueObserver is the observer added.
+     */
     public void addTotalPaymentObserver(TotalRevenueObserver totalRevenueObserver) {
         register.addTotalPaymentObservers(totalRevenueObserver);
     }

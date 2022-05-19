@@ -1,4 +1,4 @@
-package IV1350_seminar_3.tests;
+package IV1350_seminar_3.integration;
 
 import IV1350_seminar_3.model.Item;
 import IV1350_seminar_3.model.Sale;

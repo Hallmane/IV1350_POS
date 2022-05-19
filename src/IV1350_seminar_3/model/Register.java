@@ -29,6 +29,11 @@ public class Register {
             totalRevenueObserver.newPayment(finalTotal);
         }
     }
+
+    /**
+     * Adds a TotalRevenueObserver to send notices to.
+     * @param totalRevenueObserver is the observer to add.
+     */
     public void addTotalPaymentObservers(TotalRevenueObserver totalRevenueObserver) {
         totalRevenueObservers.add(totalRevenueObserver);
     }
