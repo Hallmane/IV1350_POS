@@ -6,8 +6,6 @@ import IV1350_seminar_3.integration.Printer;
 import IV1350_seminar_3.integration.ServerErrorException;
 import IV1350_seminar_3.view.TotalRevenueFileOutput;
 import IV1350_seminar_3.model.*;
-import IV1350_seminar_3.util.ErrorMessageHandler;
-import IV1350_seminar_3.util.LogHandler;
 
 /**
  * the Controller class which is responsible for calling the methods needed
@@ -19,8 +17,6 @@ public class Controller {
     private Printer printer = new Printer();
     private Register register = new Register();
 
-    private ErrorMessageHandler errorMessageHandler = new ErrorMessageHandler();
-    private LogHandler logHandler = new LogHandler();
     private TotalRevenueFileOutput totalRevenueFileOutput = new TotalRevenueFileOutput();
 
     /**
@@ -32,26 +28,8 @@ public class Controller {
 // Relocate this to Sale instead.
     public ItemDTO itemScan(int itemID, int quantity) { //find item in item database
         Item scannedItem = null;
-        try {
-            scannedItem = itemDatabase.getItemByID(itemID, quantity);
-        }
-        catch(NoItemIDException e) {
-            logHandler.logErrorMessage(e);
-            errorMessageHandler.showErrorMessage(e.getMessage());
-            return null;
-        }
-        catch(InvalidQuantityException e) {
-            logHandler.logErrorMessage(e);
-            errorMessageHandler.showErrorMessage(e.getMessage());
-            return null;
-        }
-        catch(ServerErrorException e) {
-            logHandler.logErrorMessage(e);
-            errorMessageHandler.showErrorMessage(e.getMessage());
-            return null;
-        }
 
-        //ItemDTO[] dtos = sale.returnItemsDTO();
+        scannedItem = itemDatabase.getItemByID(itemID, quantity);
 
         sale.addItemToSale(scannedItem);
         return new ItemDTO(scannedItem);
@@ -71,8 +49,8 @@ public class Controller {
      */
     public float endSale() {
         sale.endSale();
-        float finalPrice = sale.endSale();
-        return finalPrice;
+        //float finalPrice = sale.endSale();
+        return sale.endSale();
     }
 
     /**
