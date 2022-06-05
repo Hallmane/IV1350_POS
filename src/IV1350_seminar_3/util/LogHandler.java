@@ -3,6 +3,7 @@ package IV1350_seminar_3.util;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.Arrays;
 
 
 public class LogHandler {
@@ -15,7 +16,7 @@ public class LogHandler {
         message.append("\n[[DEVELOPER_LOG] Exception was thrown]: \t");
         message.append("\n" + createTime());
         message.append(exception.getMessage());
-        message.append("\n" + exception.getStackTrace().toString());
+        message.append("\n" + Arrays.toString(exception.getStackTrace()));
         System.out.println(message);
     }
     private String createTime() {

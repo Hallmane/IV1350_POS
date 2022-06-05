@@ -2,6 +2,11 @@ package IV1350_seminar_3.view;
 
 import IV1350_seminar_3.DTOs.ItemDTO;
 import IV1350_seminar_3.controller.Controller;
+import IV1350_seminar_3.integration.ServerErrorException;
+import IV1350_seminar_3.model.InvalidQuantityException;
+import IV1350_seminar_3.model.NoItemIDException;
+import IV1350_seminar_3.util.ErrorMessageHandler;
+import IV1350_seminar_3.util.LogHandler;
 
 
 /**
@@ -26,6 +31,8 @@ public class View {
     private int fifthItemID = 1;
     private int fifthItemQuantity = -1;
 
+    private LogHandler logHandler = new LogHandler();
+    private ErrorMessageHandler errorMessageHandler = new ErrorMessageHandler();
 
     /**
      * Creates a new instance that uses the specified controller for 
@@ -47,23 +54,39 @@ public class View {
         System.out.println(textToPrint);
     }
 
+    public void predeterminedView() {
+        firstSale();
+    }
+
+    private void tryAddItem(int itemID, int itemQuantity) {
+        try {
+            ItemDTO firstItemDTO = controller.itemScan(itemID, itemQuantity);
+            itemToPrint(firstItemDTO);
+            }
+        catch(NoItemIDException e) {
+            logHandler.logErrorMessage(e);
+            errorMessageHandler.showErrorMessage("Could not add item with ID " + e.getInvalidItemID()+ ". ");
+        }
+        catch(InvalidQuantityException e) {
+            logHandler.logErrorMessage(e);
+            errorMessageHandler.showErrorMessage("Invalid quantity: \" "+e.getInvalidQuantity()+"\".");
+        }
+        catch(ServerErrorException e) {
+            logHandler.logErrorMessage(e);
+            errorMessageHandler.showErrorMessage("Could not reach the server.");
+        }
+    }
+
     /**
      * hardcoded version of the View that represents a cashier starting a sale and scanning items.
      */
-    public void predeterminedView() {
+    private void firstSale() {
         controller.startSale();
 
-        ItemDTO firstItemDTO = controller.itemScan(firstItemID, firstItemQuantity);
-        itemToPrint(firstItemDTO);
-
-        ItemDTO secondItemDTO = controller.itemScan(secondItemID, secondItemQuantity);
-        itemToPrint(secondItemDTO);
-
-        ItemDTO thirdItemDTO = controller.itemScan(thirdItemID, thirdItemQuantity);
-        itemToPrint(thirdItemDTO);
-
-        ItemDTO fourthItemDTO = controller.itemScan(fourthItemID, fourthItemQuantity);
-        itemToPrint(fourthItemDTO);
+        tryAddItem(firstItemID, firstItemQuantity);
+        tryAddItem(secondItemID, secondItemQuantity);
+        tryAddItem(thirdItemID, thirdItemQuantity);
+        tryAddItem(fourthItemID, fourthItemQuantity);
 
         ItemDTO fifthItemDTO = controller.itemScan(fifthItemID, fifthItemQuantity);
         itemToPrint(fifthItemDTO);
