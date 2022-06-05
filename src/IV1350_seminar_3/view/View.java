@@ -25,8 +25,11 @@ public class View {
     private int thirdItemID = 404;
     private int thirdItemQuantity = 3;
 
-    private int fourthItemID = 3;
-    private int fourthItemQuantity = -4;
+    private int fourthItemID = 1337;
+    private int fourthItemQuantity = 1;
+
+    private int fifthItemID = 1;
+    private int fifthItemQuantity = -1;
 
     private LogHandler logHandler = new LogHandler();
     private ErrorMessageHandler errorMessageHandler = new ErrorMessageHandler();
@@ -85,6 +88,8 @@ public class View {
         tryAddItem(thirdItemID, thirdItemQuantity);
         tryAddItem(fourthItemID, fourthItemQuantity);
 
+        ItemDTO fifthItemDTO = controller.itemScan(fifthItemID, fifthItemQuantity);
+        itemToPrint(fifthItemDTO);
 
         float totalPrice = controller.endSale();
         controller.depositAmountPaid(totalPrice);
