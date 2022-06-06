@@ -64,7 +64,7 @@ public class View {
             itemToPrint(firstItemDTO);
             }
         catch(NoItemIDException e) {
-            logHandler.logErrorMessage(e);
+            //logHandler.logErrorMessage(e);
             errorMessageHandler.showErrorMessage("Could not add item with ID " + e.getInvalidItemID()+ ". ");
         }
         catch(InvalidQuantityException e) {
@@ -88,8 +88,8 @@ public class View {
         tryAddItem(thirdItemID, thirdItemQuantity);
         tryAddItem(fourthItemID, fourthItemQuantity);
 
-        ItemDTO fifthItemDTO = controller.itemScan(fifthItemID, fifthItemQuantity);
-        itemToPrint(fifthItemDTO);
+        //ItemDTO fifthItemDTO = controller.itemScan(fifthItemID, fifthItemQuantity);
+        //itemToPrint(fifthItemDTO);
 
         float totalPrice = controller.endSale();
         controller.depositAmountPaid(totalPrice);
